@@ -15,7 +15,7 @@ function App() {
   }, []);
 
   async function addItem(item) {
-    await post(`${API_SERVER}/items`, item);
+    await axios.post(`${API_SERVER}/items`, item);
     getItems();
   }
 
@@ -25,6 +25,11 @@ function App() {
     setItems(items);
   }
 
+  async function deleteItem(item) {
+    const itemId = item._id;
+    await axios.delete(`${API_SERVER}/items/${itemId}`);
+    getItems();
+  }
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -39,7 +44,7 @@ function App() {
             <Form handleAddItem={addItem} />
           </Col>
           <Col>
-            <Items itemsList={items} />
+            <Items itemsList={items} handleDeleteItem={deleteItem} />
           </Col>
         </Row>
       </Container>

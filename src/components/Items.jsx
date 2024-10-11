@@ -1,46 +1,30 @@
 import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
+import Accordion from 'react-bootstrap/Accordion';
 
 function Items(props) {
 
   return (
     <section>
-      <h2>Items...</h2>
-
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            props.itemsList.map((item) =>
-              <Item key={item._id} itemData={item} />
-            )
-          }
-        </tbody>
-      </Table>
+      <h2>Items</h2>
+      <Accordion defaultActiveKey="0">
+        {props.itemsList.map((item, index) => (
+          <Accordion.Item eventKey={index.toString()} key={item._id}>
+            <Accordion.Header>{item.name}</Accordion.Header>
+            <Accordion.Body>
+              <p>{item.description}</p>
+              <Button
+                variant="danger"
+                onClick={() => props.handleDeleteItem(item)}
+                data-testid={`delete-button-${item.name}`}
+              >
+                Delete Item
+              </Button>
+            </Accordion.Body>
+          </Accordion.Item>
+        ))}
+      </Accordion>
     </section>
   );
 }
-
-function Item(props) {
-
-  const itemData = props.itemData;
-
-  return (
-    <tr>
-      <td>{itemData.name}</td>
-      <td>{itemData.description}</td>
-      <td>
-        <Button data-testid={`delete-button-${itemData.name}`}>Delete Item</Button>
-      </td>
-    </tr>
-  );
-}
-
 
 export default Items;
